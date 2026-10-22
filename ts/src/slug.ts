@@ -3,6 +3,9 @@ import kebabCase from 'lodash/kebabCase.js'
 /** The longest slug the redirector will store; the weekly report's column is as wide (py/shortlink/report.py). */
 export const SLUG_MAX = 40
 
+/** Paths the redirector serves itself; a slug that took one would never resolve. */
+export const RESERVED = new Set(['api', 'admin', 'login', 'logout', 'static'])
+
 /** A slug is lowercase letters, digits and single dashes, and never starts or ends with a dash. */
 export function isSlug(s: string): boolean {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(s)
@@ -10,7 +13,8 @@ export function isSlug(s: string): boolean {
 
 /**
  * A slug for a page, from its title: lowercase words joined by dashes, cut at a word boundary to
- * fit `SLUG_MAX`. A title with no letters or digits has no slug.
+ * fit `SLUG_MAX`. A title with no letters or digits has no slug, and one that would take a
+ * reserved path gets `-link` added.
  */
 export function slugFor(title: string): string | null {
   const words = kebabCase(title.normalize('NFKD').replace(/[̀-ͯ]/g, '')).split('-').filter(Boolean)
@@ -20,5 +24,6 @@ export function slugFor(title: string): string | null {
     if (next.length > SLUG_MAX) break
     slug = next
   }
-  return slug || null
+  if (!slug) return null
+  return RESERVED.has(slug) ? `${slug}-link` : slug
 }
