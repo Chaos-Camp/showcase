@@ -1,7 +1,7 @@
 # shortlink
 
-A tiny link shortener in three small packages, kept small on purpose: it is a showcase for
-[diff social](https://diffsocial.dev), where each pull request opens as a room.
+Short links that stay readable: a slug you can say out loud, one form per link, and a weekly
+report of what people clicked. A showcase for [diff social](https://diffsocial.dev).
 
 | Package | Language | Does |
 |---|---|---|
