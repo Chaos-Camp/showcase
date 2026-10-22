@@ -1,7 +1,7 @@
 import kebabCase from 'lodash/kebabCase.js'
 
-/** The longest slug the redirector will store. */
-export const SLUG_MAX = 32
+/** The longest slug the redirector will store; the weekly report's column is as wide (py/shortlink/report.py). */
+export const SLUG_MAX = 40
 
 /** A slug is lowercase letters, digits and single dashes, and never starts or ends with a dash. */
 export function isSlug(s: string): boolean {

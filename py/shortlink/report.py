@@ -5,12 +5,14 @@ from collections import Counter
 from jinja2 import Environment
 
 TOP = 5
+# As long as the longest slug (SLUG_MAX in ts/src/slug.ts), so the counts line up.
+SLUG_WIDTH = 40
 
 TEMPLATE = Environment(autoescape=False, trim_blocks=True, lstrip_blocks=True).from_string(
     """\
 clicks, week of {{ week }}: {{ total }}
 {% for slug, n in top %}
-  {{ "%-32s"|format(slug) }} {{ "%5d"|format(n) }}
+  {{ "%-*s"|format(width, slug) }} {{ "%5d"|format(n) }}
 {% else %}
   no clicks this week
 {% endfor %}
@@ -27,4 +29,4 @@ def busiest(events, top=TOP):
 def weekly(events, week):
     """The report for one week of redirector events."""
     clicks = [e for e in events if e.get("kind") == "click"]
-    return TEMPLATE.render(week=week, total=len(clicks), top=busiest(clicks))
+    return TEMPLATE.render(week=week, total=len(clicks), top=busiest(clicks), width=SLUG_WIDTH)

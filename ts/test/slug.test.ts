@@ -19,5 +19,5 @@ test('a long title is cut at a word, within the limit', () => {
   const slug = slugFor('The quick brown fox jumps over the lazy dog again and again')!
   assert.ok(slug.length <= SLUG_MAX)
   assert.ok(isSlug(slug))
-  assert.equal(slug, 'the-quick-brown-fox-jumps-over')
+  assert.equal(slug, 'the-quick-brown-fox-jumps-over-the-lazy')
 })
