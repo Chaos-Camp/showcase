@@ -12,7 +12,7 @@ TEMPLATE = Environment(autoescape=False, trim_blocks=True, lstrip_blocks=True).f
     """\
 clicks, week of {{ week }}: {{ total }}
 {% for slug, n in top %}
-  {{ "%-*s"|format(width, slug) }} {{ "%5d"|format(n) }}
+  {{ "%-*s"|format(width, slug) }} {{ "%5d"|format(n) }}{% if titles.get(slug) %}  {{ titles[slug] }}{% endif %}
 {% else %}
   no clicks this week
 {% endfor %}
@@ -26,7 +26,7 @@ def busiest(events, top=TOP):
     return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[:top]
 
 
-def weekly(events, week):
-    """The report for one week of redirector events."""
+def weekly(events, week, titles=None):
+    """The report for one week of redirector events; `titles` maps a slug to its page's title."""
     clicks = [e for e in events if e.get("kind") == "click"]
-    return TEMPLATE.render(week=week, total=len(clicks), top=busiest(clicks), width=SLUG_WIDTH)
+    return TEMPLATE.render(week=week, total=len(clicks), top=busiest(clicks), width=SLUG_WIDTH, titles=titles or {})
